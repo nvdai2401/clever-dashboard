@@ -1,0 +1,12 @@
+{
+  "patients": [
+    {
+      "id": "jBWMVGjm50l6LGwepDoty",
+      "name": "frontendmaster",
+      "age": 8,
+      "start_at": "7",
+      "desc": "Hello",
+      "room": "dental"
+    }
+  ]
+}
