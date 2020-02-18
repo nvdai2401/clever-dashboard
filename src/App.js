@@ -1,4 +1,7 @@
 import React from 'react'
+// import { Router, Switch } from 'react-router-dom'
+
+import HomePage from '@pages/home-page/home-page.component'
 
 import isArray from 'lodash/isArray'
 
@@ -18,7 +21,8 @@ class App extends React.Component {
 	render() {
 		return (
 			<div className='title'>
-				{this.checkFoo ? <p>Foo is an array</p> : <p>Foo is NOT an array</p>}
+				<HomePage />
+				{this.checkFoo ? <p>Foo is an array 1</p> : <p>Foo is NOT an array</p>}
 			</div>
 		)
 	}
