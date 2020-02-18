@@ -1,9 +1,8 @@
-import React from 'react'
-// import { Router, Switch } from 'react-router-dom'
+import React, { Fragment } from 'react'
+import { Route, Switch } from 'react-router-dom'
 
 import HomePage from '@pages/home-page/home-page.component'
-
-import isArray from 'lodash/isArray'
+import Header from '@components/header/header.component'
 
 import './App.scss'
 
@@ -14,16 +13,16 @@ class App extends React.Component {
 			foo: [1, 2, 3],
 		}
 	}
-
-	checkFoo = () => {
-		return isArray(this.state.foo)
-	}
 	render() {
 		return (
-			<div className='title'>
-				<HomePage />
-				{this.checkFoo ? <p>Foo is an array 1</p> : <p>Foo is NOT an array</p>}
-			</div>
+			<Fragment>
+				<Header />
+				<div>
+					<Switch>
+						<Route exact path='/' component={HomePage} />
+					</Switch>
+				</div>
+			</Fragment>
 		)
 	}
 }
