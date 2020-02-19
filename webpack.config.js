@@ -12,6 +12,7 @@ const settings = {
 	output: {
 		path: resolve(__dirname, 'dist'),
 		filename: '[name].bundle.js',
+		publicPath: '/',
 	},
 	module: {
 		rules: [
@@ -42,6 +43,7 @@ const settings = {
 	devServer: {
 		contentBase: resolve(__dirname, 'dist'),
 		port: 3000,
+		historyApiFallback: true,
 	},
 	plugins: [
 		new CleanWebpackPlugin(),

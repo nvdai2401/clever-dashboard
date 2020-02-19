@@ -8,6 +8,7 @@ import client from './client'
 import App from './App'
 
 import 'normalize.css'
+import './index.scss'
 
 const Root = () => (
 	<BrowserRouter>
