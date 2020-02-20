@@ -49,7 +49,7 @@ const settings = {
 		new CleanWebpackPlugin(),
 		new HtmlWebpackPlugin({
 			title: 'CleVer Dashboard',
-			template: resolve('./index.html'),
+			template: resolve('./src/index.html'),
 			inject: true,
 			minify: {
 				removeComments: true,
