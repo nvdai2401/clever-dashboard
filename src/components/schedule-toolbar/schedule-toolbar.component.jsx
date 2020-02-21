@@ -39,7 +39,6 @@ const useStyles = makeStyles(theme => {
 		doctorPicker: {
 			display: 'flex',
 			justifyContent: 'space-around',
-			alignItems: 'flex-end',
 		},
 		schStatusContainer: {
 			justifyContent: 'space-between',
