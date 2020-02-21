@@ -26,6 +26,7 @@
     "@date-io/date-fns": "1.x",
     "@material-ui/core": "^4.9.3",
     "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.43",
     "@material-ui/pickers": "^3.2.10",
     "add": "^2.0.6",
     "apollo-boost": "^0.4.7",

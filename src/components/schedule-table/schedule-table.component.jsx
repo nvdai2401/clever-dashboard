@@ -8,7 +8,6 @@ import {
 	TableCell,
 	TableContainer,
 	TableHead,
-	TablePagination,
 	TableRow,
 	Paper,
 } from '@material-ui/core'
@@ -21,54 +20,7 @@ import {
 	getMaxLengthOfArrayObj,
 } from '@src/utils/share'
 
-const columns = [
-	{ id: 'name', label: 'Name', minWidth: 170 },
-	{ id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
-	{
-		id: 'population',
-		label: 'Population',
-		minWidth: 170,
-		align: 'right',
-		format: value => value.toLocaleString(),
-	},
-	{
-		id: 'size',
-		label: 'Size\u00a0(km\u00b2)',
-		minWidth: 170,
-		align: 'right',
-		format: value => value.toLocaleString(),
-	},
-	{
-		id: 'density',
-		label: 'Density',
-		minWidth: 170,
-		align: 'right',
-		format: value => value.toFixed(2),
-	},
-]
-
-function createData(name, code, population, size) {
-	const density = population / size
-	return { name, code, population, size, density }
-}
-
-const rows = [
-	createData('India', 'IN', 1324171354, 3287263),
-	createData('China', 'CN', 1403500365, 9596961),
-	createData('Italy', 'IT', undefined, 301340),
-	createData('United States', 'US', 327167434, 9833520),
-	createData('Canada', 'CA', 37602103, 9984670),
-	createData('Australia', 'AU', 25475400, 7692024),
-	createData('Germany', 'DE', 83019200, 357578),
-	createData('Ireland', 'IE', 4857000, 70273),
-	createData('Mexico', 'MX', 126577691, 1972550),
-	createData('Japan', 'JP', 126317000, 377973),
-	createData('France', 'FR', 67022000, 640679),
-	createData('United Kingdom', 'GB', 67545757, 242495),
-	createData('Russia', 'RU', 146793744, 17098246),
-	createData('Nigeria', 'NG', 200962417, 923768),
-	createData('Brazil', 'BR', 210147125, 8515767),
-]
+import ScheduleTableItem from '../schedule-table-item/schedule-table-item.component'
 
 const ScheduleTableData = {
 	fri_feb_21_2020: [
@@ -222,14 +174,21 @@ const ScheduleTableData = {
 	],
 }
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
 	root: {
 		width: '100%',
 	},
 	container: {
 		height: 'calc(100vh - 170px)',
 	},
-})
+	head: {
+		backgroundColor: theme.palette.info.dark,
+		color: theme.palette.common.white,
+	},
+	tblCell: {
+		borderRight: '1px solid rgba(224, 224, 224, 1)',
+	},
+}))
 
 const ScheduleTable = ({ startDate, endDate }) => {
 	const classes = useStyles()
@@ -262,15 +221,19 @@ const ScheduleTable = ({ startDate, endDate }) => {
 
 	return (
 		<Paper className={classes.root}>
-			<TableContainer className={classes.container}>
+			<TableContainer>
 				<Table stickyHeader aria-label='sticky table'>
 					<TableHead>
-						<TableRow>
+						<TableRow className={classes.head}>
 							{colLabels.map(column => (
 								<TableCell
 									key={column.id}
 									align={column.align}
-									style={{ minWidth: column.minWidth }}
+									style={{
+										width: `${100 / colLabels.length}%`,
+										fontWeight: 700,
+									}}
+									className={`${classes.head} ${classes.tblCell}`}
 								>
 									{column.label}
 								</TableCell>
@@ -280,20 +243,25 @@ const ScheduleTable = ({ startDate, endDate }) => {
 					<TableBody>
 						{fakeArray.map((row, rowIndex) => {
 							return (
-								<TableRow
-									hover
-									role='checkbox'
-									tabIndex={-1}
-									key={`${nanoid()}`}
-								>
+								<TableRow key={`${nanoid()}`}>
 									{colLabels.map(col => {
 										return (
-											<TableCell key={col.id} align='center'>
-												{ScheduleTableData[col.id].length
-													? ScheduleTableData[col.id][rowIndex]
-														? ScheduleTableData[col.id][rowIndex].id
-														: ''
-													: ''}
+											<TableCell
+												key={col.id}
+												className={classes.tblCell}
+												align='center'
+											>
+												{ScheduleTableData[col.id].length ? (
+													ScheduleTableData[col.id][rowIndex] ? (
+														<ScheduleTableItem
+															{...ScheduleTableData[col.id][rowIndex]}
+														/>
+													) : (
+														''
+													)
+												) : (
+													''
+												)}
 											</TableCell>
 										)
 									})}

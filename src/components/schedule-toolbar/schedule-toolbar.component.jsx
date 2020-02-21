@@ -12,7 +12,10 @@ import {
 	InputLabel,
 	MenuItem,
 	Button,
+	Input,
+	TextField,
 } from '@material-ui/core'
+import { Autocomplete } from '@material-ui/lab'
 import { AddCircleOutline, SearchOutlined } from '@material-ui/icons'
 import DateFnsUtils from '@date-io/date-fns'
 import {
@@ -20,6 +23,7 @@ import {
 	KeyboardTimePicker,
 	KeyboardDatePicker,
 } from '@material-ui/pickers'
+import { doctor } from '@src/data/doctor'
 
 const useStyles = makeStyles(theme => {
 	return {
@@ -30,6 +34,7 @@ const useStyles = makeStyles(theme => {
 			padding: theme.spacing(2),
 		},
 		formControl: {
+			width: '100%',
 			minWidth: 200,
 		},
 		datePicker: {
@@ -122,19 +127,22 @@ const ScheduleToolbar = ({ startDate, endDate, onDateChange }) => {
 					</MuiPickersUtilsProvider>
 				</Grid>
 				<Grid item xs={3} className={classes.doctorPicker}>
-					<FormControl className={classes.formControl}>
-						<InputLabel id='demo-simple-select-helper-label'>Bác sĩ</InputLabel>
-						<Select
-							labelId='demo-simple-select-helper-label'
-							id='demo-simple-select-helper'
-							value={selectedDoctor}
-							onChange={e => setSelectedDoctor(e.target.value)}
-						>
-							<MenuItem value={10}>Ten</MenuItem>
-							<MenuItem value={20}>Twenty</MenuItem>
-							<MenuItem value={30}>Thirty</MenuItem>
-						</Select>
-					</FormControl>
+					<Autocomplete
+						id='combo-box-demo'
+						options={doctor}
+						getOptionLabel={option => option.title}
+						style={{ width: 300 }}
+						renderInput={params => (
+							<TextField
+								{...params}
+								value={selectedDoctor}
+								onChange={e => setSelectedDoctor(e.target.value)}
+								label='Bác sĩ'
+								fullWidth
+							/>
+						)}
+					/>
+
 					<Button
 						onClick={searchSchedule}
 						variant='contained'
