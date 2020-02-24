@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core/styles'
-import nanoid from 'nanoid'
 import {
 	Table,
 	TableBody,
@@ -12,174 +11,24 @@ import {
 	Paper,
 } from '@material-ui/core'
 import { format } from 'date-fns'
+import nanoid from 'nanoid'
 import vi from 'date-fns/locale/vi'
 import {
-	convertToKebabCase,
 	convertToSpaceStr,
 	genMockArray,
 	getMaxLengthOfArrayObj,
 } from '@src/utils/share'
+import ScheduleTableData from '@src/data/schedule'
 
 import ScheduleTableItem from '../schedule-table-item/schedule-table-item.component'
-
-const ScheduleTableData = {
-	fri_feb_21_2020: [
-		{
-			id: nanoid(),
-			name: 'Nguyen Van A',
-			hours: '08:00',
-			doctor: 'Luong Van Bang',
-			phone_number: '0123456789',
-			address: 'Ha Noi',
-			sex: 'male',
-			age: 24,
-			desc: 'Hen tai kham',
-			img: `https://randomuser.me/api/portraits/men/${Math.floor(
-				Math.random() * 100
-			)}.jpg`,
-		},
-		{
-			id: nanoid(),
-			name: 'Nguyen Van B',
-			hours: '10:00',
-			doctor: 'Luong Van Bang',
-			phone_number: '0123456789',
-			address: 'Ha Noi',
-			sex: 'male',
-			age: 24,
-			desc: 'Hen tai kham',
-			img: `https://randomuser.me/api/portraits/men/${Math.floor(
-				Math.random() * 100
-			)}.jpg`,
-		},
-	],
-	sat_feb_22_2020: [
-		{
-			id: nanoid(),
-			name: 'Nguyen Van A',
-			hours: '08:00',
-			doctor: 'Luong Van Bang',
-			phone_number: '0123456789',
-			address: 'Ha Noi',
-			sex: 'male',
-			age: 24,
-			desc: 'Hen tai kham',
-			img: `https://randomuser.me/api/portraits/men/${Math.floor(
-				Math.random() * 100
-			)}.jpg`,
-		},
-		{
-			id: nanoid(),
-			name: 'Nguyen Van A',
-			hours: '08:00',
-			doctor: 'Luong Van Bang',
-			phone_number: '0123456789',
-			address: 'Ha Noi',
-			sex: 'male',
-			age: 24,
-			desc: 'Hen tai kham',
-			img: `https://randomuser.me/api/portraits/men/${Math.floor(
-				Math.random() * 100
-			)}.jpg`,
-		},
-		{
-			id: nanoid(),
-			name: 'Nguyen Van A',
-			hours: '08:00',
-			doctor: 'Luong Van Bang',
-			phone_number: '0123456789',
-			address: 'Ha Noi',
-			sex: 'male',
-			age: 24,
-			desc: 'Hen tai kham',
-			img: `https://randomuser.me/api/portraits/men/${Math.floor(
-				Math.random() * 100
-			)}.jpg`,
-		},
-	],
-	sun_feb_23_2020: [],
-	mon_feb_24_2020: [
-		{
-			id: nanoid(),
-			name: 'Nguyen Van A',
-			hours: '08:00',
-			doctor: 'Luong Van Bang',
-			phone_number: '0123456789',
-			address: 'Ha Noi',
-			sex: 'male',
-			age: 24,
-			desc: 'Hen tai kham',
-			img: `https://randomuser.me/api/portraits/men/${Math.floor(
-				Math.random() * 100
-			)}.jpg`,
-		},
-	],
-	tue_feb_25_2020: [
-		{
-			id: nanoid(),
-			name: 'Nguyen Van A',
-			hours: '08:00',
-			doctor: 'Luong Van Bang',
-			phone_number: '0123456789',
-			address: 'Ha Noi',
-			sex: 'male',
-			age: 24,
-			desc: 'Hen tai kham',
-			img: `https://randomuser.me/api/portraits/men/${Math.floor(
-				Math.random() * 100
-			)}.jpg`,
-		},
-		{
-			id: nanoid(),
-			name: 'Nguyen Van A',
-			hours: '08:00',
-			doctor: 'Luong Van Bang',
-			phone_number: '0123456789',
-			address: 'Ha Noi',
-			sex: 'male',
-			age: 24,
-			desc: 'Hen tai kham',
-			img: `https://randomuser.me/api/portraits/men/${Math.floor(
-				Math.random() * 100
-			)}.jpg`,
-		},
-		{
-			id: nanoid(),
-			name: 'Nguyen Van A',
-			hours: '08:00',
-			doctor: 'Luong Van Bang',
-			phone_number: '0123456789',
-			address: 'Ha Noi',
-			sex: 'male',
-			age: 24,
-			desc: 'Hen tai kham',
-			img: `https://randomuser.me/api/portraits/men/${Math.floor(
-				Math.random() * 100
-			)}.jpg`,
-		},
-		{
-			id: nanoid(),
-			name: 'Nguyen Van A',
-			hours: '08:00',
-			doctor: 'Luong Van Bang',
-			phone_number: '0123456789',
-			address: 'Ha Noi',
-			sex: 'male',
-			age: 24,
-			desc: 'Hen tai kham',
-			img: `https://randomuser.me/api/portraits/men/${Math.floor(
-				Math.random() * 100
-			)}.jpg`,
-		},
-	],
-}
+import CUScheduleModal from '../cu-schedule-modal/cu-schedule-modal.component'
 
 const useStyles = makeStyles(theme => ({
 	root: {
 		width: '100%',
 	},
 	container: {
-		height: 'calc(100vh - 170px)',
+		maxHeight: 'calc(100vh - 155px)',
 	},
 	head: {
 		backgroundColor: theme.palette.info.dark,
@@ -187,10 +36,11 @@ const useStyles = makeStyles(theme => ({
 	},
 	tblCell: {
 		borderRight: '1px solid rgba(224, 224, 224, 1)',
+		minWidth: 250,
 	},
 }))
 
-const ScheduleTable = ({ startDate, endDate }) => {
+const ScheduleTable = ({ startDate, endDate, cUScheduleModalVisible }) => {
 	const classes = useStyles()
 
 	const genColumnLabel = scheduleTableData => {
@@ -221,7 +71,7 @@ const ScheduleTable = ({ startDate, endDate }) => {
 
 	return (
 		<Paper className={classes.root}>
-			<TableContainer>
+			<TableContainer className={classes.container}>
 				<Table stickyHeader aria-label='sticky table'>
 					<TableHead>
 						<TableRow className={classes.head}>
@@ -271,6 +121,9 @@ const ScheduleTable = ({ startDate, endDate }) => {
 					</TableBody>
 				</Table>
 			</TableContainer>
+			{cUScheduleModalVisible ? (
+				<CUScheduleModal visible={cUScheduleModalVisible} />
+			) : null}
 		</Paper>
 	)
 }
@@ -278,11 +131,13 @@ const ScheduleTable = ({ startDate, endDate }) => {
 ScheduleTable.propTypes = {
 	startDate: PropTypes.object,
 	endDate: PropTypes.object,
+	cUScheduleModalVisible: PropTypes.bool,
 }
 
 ScheduleTable.defaultProps = {
 	startDate: new Date(),
 	endDate: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000),
+	cUScheduleModalVisible: false,
 }
 
 export default ScheduleTable

@@ -9,11 +9,16 @@ import {
 	Button,
 	Typography,
 	Tooltip,
+	IconButton,
 } from '@material-ui/core'
+import { Create, Phone } from '@material-ui/icons'
 
 const useStyles = makeStyles({
 	root: {
 		minWidth: 275,
+	},
+	cardContent: {
+		paddingBottom: 0,
 	},
 	bullet: {
 		display: 'inline-block',
@@ -43,7 +48,7 @@ const ScheduleItemDetail = ({
 	const classes = useStyles()
 	return (
 		<Card className={classes.root}>
-			<CardContent>
+			<CardContent className={classes.cardContent}>
 				<Typography variant='h5' component='h2'>
 					{name}
 				</Typography>
@@ -73,6 +78,14 @@ const ScheduleItemDetail = ({
 					Nội dung: {desc}
 				</Typography>
 			</CardContent>
+			<CardActions disableSpacing>
+				<IconButton aria-label='update-info'>
+					<Create />
+				</IconButton>
+				<IconButton aria-label='contact'>
+					<Phone />
+				</IconButton>
+			</CardActions>
 		</Card>
 	)
 }

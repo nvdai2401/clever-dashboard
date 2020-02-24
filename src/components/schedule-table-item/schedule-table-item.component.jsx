@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, withStyles } from '@material-ui/core/styles'
 import {
 	Card,
 	CardActions,
@@ -19,6 +19,7 @@ const useStyles = makeStyles(theme => ({
 		minWidth: 200,
 	},
 	item: {
+		position: 'relative',
 		padding: theme.spacing(1),
 		textAlign: 'left',
 		'&:last-child': {
@@ -30,6 +31,14 @@ const useStyles = makeStyles(theme => ({
 	},
 	pos: {
 		marginBottom: 12,
+	},
+	statusBadge: {
+		borderRadius: '50%',
+		width: 20,
+		height: 20,
+		position: 'absolute',
+		top: 8,
+		right: 8,
 	},
 }))
 
@@ -44,8 +53,29 @@ const ScheduleTableItem = ({
 	age,
 	desc,
 	img,
+	status,
 }) => {
 	const classes = useStyles()
+
+	const genStatusBgColor = status => {
+		const rbgStatusCode = {
+			wait_for_re_exam: '76, 175, 80',
+			did_re_exam: '245, 0, 87',
+			waiting: '255, 152, 0',
+			came: '244, 67, 54',
+		}
+		return `rgb(${rbgStatusCode[status]})`
+	}
+
+	const StatusBtn = withStyles({})(({ status }) => {
+		return (
+			<div
+				className={classes.statusBadge}
+				style={{ backgroundColor: genStatusBgColor(status) }}
+			/>
+		)
+	})
+
 	return (
 		<Tooltip
 			title={
@@ -76,6 +106,7 @@ const ScheduleTableItem = ({
 					>
 						{hours}
 					</Typography>
+					<StatusBtn status={status} />
 					<Typography variant='h6' component='h4'>
 						{name}
 					</Typography>
@@ -105,6 +136,7 @@ ScheduleTableItem.propTypes = {
 	age: PropTypes.number,
 	desc: PropTypes.string,
 	img: PropTypes.string,
+	status: PropTypes.string,
 }
 
 export default ScheduleTableItem
