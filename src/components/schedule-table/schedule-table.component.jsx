@@ -21,7 +21,6 @@ import {
 import ScheduleTableData from '@src/data/schedule'
 
 import ScheduleTableItem from '../schedule-table-item/schedule-table-item.component'
-import CUScheduleModal from '../cu-schedule-modal/cu-schedule-modal.component'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -40,7 +39,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-const ScheduleTable = ({ startDate, endDate, cUScheduleModalVisible }) => {
+const ScheduleTable = ({ startDate, endDate }) => {
 	const classes = useStyles()
 
 	const genColumnLabel = scheduleTableData => {
@@ -121,9 +120,6 @@ const ScheduleTable = ({ startDate, endDate, cUScheduleModalVisible }) => {
 					</TableBody>
 				</Table>
 			</TableContainer>
-			{cUScheduleModalVisible ? (
-				<CUScheduleModal visible={cUScheduleModalVisible} />
-			) : null}
 		</Paper>
 	)
 }
@@ -131,13 +127,11 @@ const ScheduleTable = ({ startDate, endDate, cUScheduleModalVisible }) => {
 ScheduleTable.propTypes = {
 	startDate: PropTypes.object,
 	endDate: PropTypes.object,
-	cUScheduleModalVisible: PropTypes.bool,
 }
 
 ScheduleTable.defaultProps = {
 	startDate: new Date(),
 	endDate: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000),
-	cUScheduleModalVisible: false,
 }
 
 export default ScheduleTable

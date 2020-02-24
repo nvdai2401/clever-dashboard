@@ -78,6 +78,7 @@ const ScheduleToolbar = ({
 	endDate,
 	onDateChange,
 	toggleCUScheduleModal,
+	changeActionType,
 }) => {
 	const classes = useStyles()
 	const [selectedDoctor, setSelectedDoctor] = React.useState('')
@@ -172,7 +173,10 @@ const ScheduleToolbar = ({
 						variant='contained'
 						color='primary'
 						startIcon={<AddCircleOutline />}
-						onClick={toggleCUScheduleModal}
+						onClick={() => {
+							toggleCUScheduleModal()
+							changeActionType('create')
+						}}
 					>
 						Thêm lịch hẹn
 					</Button>
@@ -187,6 +191,7 @@ ScheduleToolbar.propTypes = {
 	endDate: PropTypes.object,
 	onDateChange: PropTypes.func,
 	toggleCUScheduleModal: PropTypes.func,
+	changeActionType: PropTypes.func,
 }
 
 ScheduleToolbar.defaultProps = {

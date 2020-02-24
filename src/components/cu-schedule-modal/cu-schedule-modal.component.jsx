@@ -1,42 +1,230 @@
+import 'date-fns'
 import React from 'react'
 import PropTypes from 'prop-types'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, withStyles } from '@material-ui/core/styles'
 import {
+	Avatar,
 	Button,
 	Dialog,
 	DialogActions,
 	DialogContent,
-	DialogContentText,
+	RadioGroup,
 	DialogTitle,
+	Typography,
+	IconButton,
+	TextField,
+	Grid,
+	FormControl,
+	FormControlLabel,
+	Radio,
+	FormLabel,
 } from '@material-ui/core'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
-import { useTheme } from '@material-ui/core/styles'
+import { Close, CloudUpload } from '@material-ui/icons'
+import DateFnsUtils from '@date-io/date-fns'
+import {
+	MuiPickersUtilsProvider,
+	KeyboardTimePicker,
+	KeyboardDatePicker,
+} from '@material-ui/pickers'
+import { Autocomplete } from '@material-ui/lab'
+import { doctor as doctorList } from '@src/data/doctor'
 
-const CUScheduleModal = ({ handleClose, visible }) => {
-	const theme = useTheme()
-	const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
+const useStyles = makeStyles(theme => ({
+	root: {
+		position: 'relative',
+	},
+	modalTitle: {
+		textAlign: 'center',
+		textTransform: 'uppercase',
+	},
+	textField: {
+		minWidth: 200,
+		width: '100%',
+		marginTop: 6,
+	},
+	formControl: {
+		width: '100%',
+		marginTop: 24,
+	},
+	radioGroup: {
+		flexDirection: 'initial',
+	},
+	closeIcon: {
+		position: 'absolute',
+		top: 0,
+		right: 0,
+	},
+	closeImageIcon: {
+		position: 'absolute',
+		top: 0,
+		right: 0,
+		zIndex: 2,
+	},
+	uploadingInput: {
+		display: 'none',
+	},
+	dateTimePicker: {
+		width: '100%',
+	},
+}))
+
+const CUScheduleModal = ({
+	title,
+	name,
+	sex,
+	age,
+	address,
+	doctor,
+	hour,
+	date,
+	desc,
+	img,
+	handleClose,
+	visible,
+	actionType,
+}) => {
+	const classes = useStyles()
 	return (
 		<Dialog
-			fullScreen={fullScreen}
+			className={classes.root}
 			open={visible}
 			onClose={handleClose}
 			aria-labelledby='responsive-dialog-title'
 		>
-			<DialogTitle id='responsive-dialog-title'>
-				{"Use Google's location service?"}
+			<DialogTitle
+				id='responsive-dialog-title'
+				className={classes.modalTitle}
+				onClose={handleClose}
+			>
+				<Typography variant='h5'>
+					{actionType === 'create' ? 'Thêm lịch hẹn' : 'Cập nhật lịch hẹn'}
+				</Typography>
+				<IconButton className={classes.closeIcon} onClick={handleClose}>
+					<Close />
+				</IconButton>
 			</DialogTitle>
-			<DialogContent>
-				<DialogContentText>
-					Let Google help apps determine location. This means sending anonymous
-					location data to Google, even when no apps are running.
-				</DialogContentText>
+			<DialogContent dividers>
+				<form noValidate>
+					<Grid container spacing={3}>
+						<Grid item xs={6}>
+							<TextField
+								className={classes.textField}
+								required
+								label='Họ và tên'
+								defaultValue='Nguyễn Văn A'
+							/>
+							<TextField
+								className={classes.textField}
+								label='Số điện thoại'
+								type='number'
+							/>
+							<TextField
+								className={classes.textField}
+								label='Tuổi'
+								type='number'
+							/>
+							<TextField className={classes.textField} label='Địa chỉ' />
+							<FormControl component='fieldset' className={classes.formControl}>
+								<FormLabel component='legend'>Giới tính</FormLabel>
+								<RadioGroup
+									aria-label='gender'
+									name='gender'
+									className={classes.radioGroup}
+								>
+									<FormControlLabel
+										value='female'
+										control={<Radio />}
+										label='Nữ'
+									/>
+									<FormControlLabel
+										value='male'
+										control={<Radio />}
+										label='Nam'
+									/>
+								</RadioGroup>
+							</FormControl>
+						</Grid>
+						<Grid item xs={6}>
+							{img ? (
+								<React.Fragment>
+									<Avatar alt='Avatar' src={img} variant='square' />
+									<IconButton
+										aria-label='upload picture'
+										component='span'
+										className={classes.closeImageIcon}
+										// onClick={() => setAvatar('')}
+									>
+										<Close />
+									</IconButton>
+								</React.Fragment>
+							) : (
+								<Button
+									variant='contained'
+									color='default'
+									component='label'
+									startIcon={<CloudUpload />}
+								>
+									Upload
+									<input
+										accept='image/*'
+										className={classes.uploadingInput}
+										id='uploading-input'
+										// onChange={onUpload}
+										type='file'
+									/>
+								</Button>
+							)}
+							<Autocomplete
+								id='combo-box-demo'
+								options={doctorList}
+								getOptionLabel={option => option.title}
+								fullwidth
+								renderInput={params => (
+									<TextField
+										{...params}
+										// value={selectedDoctor}
+										// onChange={e => setSelectedDoctor(e.target.value)}
+										label='Bác sĩ'
+										fullWidth
+									/>
+								)}
+							/>
+							<MuiPickersUtilsProvider
+								utils={DateFnsUtils}
+								className={classes.dateTimePicker}
+							>
+								<KeyboardDatePicker
+									disableToolbar
+									variant='inline'
+									format='dd/MM/yyyy'
+									id='date-picker-inline 1'
+									label='Ngày khám bệnh'
+									value={date}
+									// onChange={date => onDateChange({ startDate: date })}
+									KeyboardButtonProps={{
+										'aria-label': 'change date',
+									}}
+								/>
+								<KeyboardTimePicker
+									id='time-picker'
+									label='Giờ khám bệnh'
+									// value={selectedDate}
+									// onChange={handleDateChange}
+									KeyboardButtonProps={{
+										'aria-label': 'change time',
+									}}
+								/>
+							</MuiPickersUtilsProvider>
+						</Grid>
+					</Grid>
+				</form>
 			</DialogContent>
 			<DialogActions>
 				<Button autoFocus onClick={handleClose} color='primary'>
-					Disagree
+					Hủy bỏ
 				</Button>
 				<Button onClick={handleClose} color='primary' autoFocus>
-					Agree
+					Hoàn thành
 				</Button>
 			</DialogActions>
 		</Dialog>
@@ -56,6 +244,7 @@ CUScheduleModal.propTypes = {
 	img: PropTypes.string,
 	handleClose: PropTypes.func,
 	visible: PropTypes.bool,
+	actionType: PropTypes.string,
 }
 
 CUScheduleModal.defaultProps = {
@@ -70,6 +259,7 @@ CUScheduleModal.defaultProps = {
 	desc: '',
 	img: '',
 	visible: false,
+	actionType: 'create',
 }
 
 export default CUScheduleModal
