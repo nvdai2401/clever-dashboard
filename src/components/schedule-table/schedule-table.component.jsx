@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-const ScheduleTable = ({ startDate, endDate }) => {
+const ScheduleTable = ({ startDate, endDate, openUpdateScheduleInfoModal }) => {
 	const classes = useStyles()
 
 	const genColumnLabel = scheduleTableData => {
@@ -104,6 +104,9 @@ const ScheduleTable = ({ startDate, endDate }) => {
 													ScheduleTableData[col.id][rowIndex] ? (
 														<ScheduleTableItem
 															{...ScheduleTableData[col.id][rowIndex]}
+															openUpdateScheduleInfoModal={
+																openUpdateScheduleInfoModal
+															}
 														/>
 													) : (
 														''
@@ -127,6 +130,7 @@ const ScheduleTable = ({ startDate, endDate }) => {
 ScheduleTable.propTypes = {
 	startDate: PropTypes.object,
 	endDate: PropTypes.object,
+	openUpdateScheduleInfoModal: PropTypes.func,
 }
 
 ScheduleTable.defaultProps = {

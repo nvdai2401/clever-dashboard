@@ -4,14 +4,17 @@ import ScheduleToolbar from '@components/schedule-toolbar/schedule-toolbar.compo
 import ScheduleTable from '@components/schedule-table/schedule-table.component'
 import CUScheduleModal from '@components/cu-schedule-modal/cu-schedule-modal.component'
 
+import ScheduleTableData from '@src/data/schedule'
+
 class SchedulePage extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
 			startDate: new Date(),
 			endDate: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000),
-			cUScheduleModalVisible: true,
+			cUScheduleModalVisible: false,
 			actionType: 'create',
+			scheduleItem: {},
 		}
 	}
 
@@ -32,12 +35,24 @@ class SchedulePage extends React.Component {
 		this.setState({ actionType })
 	}
 
+	onOpenUpdateScheduleInfoModal = (id, date) => {
+		const scheduleItem = ScheduleTableData[date].find(
+			schedule => schedule.id === id
+		)
+		if (scheduleItem) {
+			this.setState({ scheduleItem })
+			this.onChangeActionType('update')
+			this.onToggleCUScheduleModal()
+		}
+	}
+
 	render() {
 		const {
 			startDate,
 			endDate,
 			cUScheduleModalVisible,
 			actionType,
+			scheduleItem,
 		} = this.state
 		return (
 			<React.Fragment>
@@ -48,12 +63,17 @@ class SchedulePage extends React.Component {
 					toggleCUScheduleModal={this.onToggleCUScheduleModal}
 					changeActionType={this.onChangeActionType}
 				/>
-				<ScheduleTable startDate={startDate} endDate={endDate} />
+				<ScheduleTable
+					startDate={startDate}
+					endDate={endDate}
+					openUpdateScheduleInfoModal={this.onOpenUpdateScheduleInfoModal}
+				/>
 				{cUScheduleModalVisible ? (
 					<CUScheduleModal
 						visible={cUScheduleModalVisible}
 						actionType={actionType}
 						handleClose={this.onToggleCUScheduleModal}
+						{...scheduleItem}
 					/>
 				) : null}
 			</React.Fragment>

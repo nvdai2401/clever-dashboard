@@ -46,6 +46,7 @@ const ScheduleTableItem = ({
 	id,
 	name,
 	hours,
+	date,
 	doctor,
 	phone_number,
 	address,
@@ -54,6 +55,7 @@ const ScheduleTableItem = ({
 	desc,
 	img,
 	status,
+	openUpdateScheduleInfoModal,
 }) => {
 	const classes = useStyles()
 
@@ -84,6 +86,7 @@ const ScheduleTableItem = ({
 						id,
 						name,
 						hours,
+						date,
 						doctor,
 						phone_number,
 						address,
@@ -91,6 +94,7 @@ const ScheduleTableItem = ({
 						age,
 						desc,
 						img,
+						openUpdateScheduleInfoModal,
 					}}
 				/>
 			}
@@ -129,6 +133,7 @@ ScheduleTableItem.propTypes = {
 	id: PropTypes.string,
 	name: PropTypes.string,
 	hours: PropTypes.string,
+	date: PropTypes.string,
 	doctor: PropTypes.string,
 	phone_number: PropTypes.string,
 	address: PropTypes.string,
@@ -137,6 +142,7 @@ ScheduleTableItem.propTypes = {
 	desc: PropTypes.string,
 	img: PropTypes.string,
 	status: PropTypes.string,
+	openUpdateScheduleInfoModal: PropTypes.func,
 }
 
 export default ScheduleTableItem

@@ -28,6 +28,7 @@ import {
 } from '@material-ui/pickers'
 import { Autocomplete } from '@material-ui/lab'
 import { doctor as doctorList } from '@src/data/doctor'
+import { convertToSpaceStr } from '@src/utils/share'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -84,6 +85,10 @@ const useStyles = makeStyles(theme => ({
 		zIndex: 2,
 		color: '#ffffff',
 	},
+	actionBtnContainer: {
+		padding: theme.spacing(2),
+		justifyContent: 'center',
+	},
 }))
 
 const CUScheduleModal = ({
@@ -91,7 +96,7 @@ const CUScheduleModal = ({
 	name,
 	sex,
 	age,
-	phoneNumber,
+	phone_number,
 	address,
 	doctor,
 	hour,
@@ -105,11 +110,11 @@ const CUScheduleModal = ({
 	const [pName, setPName] = useState(name)
 	const [pSex, setPSex] = useState(sex)
 	const [pAge, setPAge] = useState(age)
-	const [pPhoneNumber, setPPhoneNumber] = useState(phoneNumber)
+	const [pPhoneNumber, setPPhoneNumber] = useState(phone_number)
 	const [pAddress, setPAddress] = useState(address)
 	const [pDoctor, setPDoctor] = useState(doctor)
 	const [pTime, setPTime] = useState(hour)
-	const [pDate, setPDate] = useState(date)
+	const [pDate, setPDate] = useState(convertToSpaceStr(date))
 	const [pDesc, setPDesc] = useState(desc)
 	const [pImg, setPImg] = useState(img)
 	const classes = useStyles()
@@ -289,7 +294,7 @@ const CUScheduleModal = ({
 					</Grid>
 				</form>
 			</DialogContent>
-			<DialogActions classname={classes.actionBtnContainer}>
+			<DialogActions className={classes.actionBtnContainer}>
 				<Button variant='contained' color='secondary' onClick={handleClose}>
 					Hủy bỏ
 				</Button>
@@ -306,11 +311,11 @@ CUScheduleModal.propTypes = {
 	name: PropTypes.string,
 	sex: PropTypes.string,
 	age: PropTypes.number,
-	phoneNumber: PropTypes.string,
+	phone_number: PropTypes.string,
 	address: PropTypes.string,
 	doctor: PropTypes.string,
 	hour: PropTypes.number,
-	date: PropTypes.object,
+	date: PropTypes.string,
 	desc: PropTypes.string,
 	img: PropTypes.string,
 	handleClose: PropTypes.func,
@@ -323,7 +328,7 @@ CUScheduleModal.defaultProps = {
 	name: '',
 	sex: '',
 	age: undefined,
-	phoneNumber: '',
+	phone_number: '',
 	address: '',
 	doctor: '',
 	hour: new Date().getHours(),

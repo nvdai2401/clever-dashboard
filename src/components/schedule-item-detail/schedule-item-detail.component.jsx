@@ -37,6 +37,7 @@ const ScheduleItemDetail = ({
 	id,
 	name,
 	hours,
+	date,
 	doctor,
 	phone_number,
 	address,
@@ -44,6 +45,7 @@ const ScheduleItemDetail = ({
 	age,
 	desc,
 	img,
+	openUpdateScheduleInfoModal,
 }) => {
 	const classes = useStyles()
 	return (
@@ -79,7 +81,10 @@ const ScheduleItemDetail = ({
 				</Typography>
 			</CardContent>
 			<CardActions disableSpacing>
-				<IconButton aria-label='update-info'>
+				<IconButton
+					aria-label='update-info'
+					onClick={() => openUpdateScheduleInfoModal(id, date)}
+				>
 					<Create />
 				</IconButton>
 				<IconButton aria-label='contact'>
@@ -94,6 +99,7 @@ ScheduleItemDetail.propTypes = {
 	id: PropTypes.string,
 	name: PropTypes.string,
 	hours: PropTypes.string,
+	date: PropTypes.string,
 	doctor: PropTypes.string,
 	phone_number: PropTypes.string,
 	address: PropTypes.string,
@@ -101,15 +107,18 @@ ScheduleItemDetail.propTypes = {
 	age: PropTypes.number,
 	desc: PropTypes.string,
 	img: PropTypes.string,
+	openUpdateScheduleInfoModal: PropTypes.func,
 }
 
 ScheduleItemDetail.defaultProps = {
-	name: 'Trống',
-	hours: 'Trống',
-	doctor: 'Trống',
-	phone_number: 'Trống',
-	address: 'Trống',
-	sex: 'Trống',
+	name: '',
+	hour: '',
+	date: '',
+	hours: '',
+	doctor: '',
+	phone_number: '',
+	address: '',
+	sex: '',
 	age: 18,
 	desc: '',
 	img: 'https://s3.amazonaws.com/37assets/svn/765-default-avatar.png',
