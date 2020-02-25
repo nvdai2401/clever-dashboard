@@ -10,7 +10,7 @@ class SchedulePage extends React.Component {
 		this.state = {
 			startDate: new Date(),
 			endDate: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000),
-			cUScheduleModalVisible: false,
+			cUScheduleModalVisible: true,
 			actionType: 'create',
 		}
 	}

@@ -1,5 +1,5 @@
 import 'date-fns'
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { makeStyles, withStyles } from '@material-ui/core/styles'
 import {
@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
 		textAlign: 'center',
 		textTransform: 'uppercase',
 	},
-	textField: {
+	inputField: {
 		minWidth: 200,
 		width: '100%',
 		marginTop: 6,
@@ -54,17 +54,35 @@ const useStyles = makeStyles(theme => ({
 		top: 0,
 		right: 0,
 	},
-	closeImageIcon: {
-		position: 'absolute',
-		top: 0,
-		right: 0,
-		zIndex: 2,
-	},
 	uploadingInput: {
 		display: 'none',
 	},
 	dateTimePicker: {
 		width: '100%',
+	},
+	imgUploader: {
+		position: 'relative',
+		border: '1px solid #e0e0e0',
+		height: 180,
+		width: 180,
+		borderRadius: theme.shape.borderRadius,
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+		padding: theme.spacing(0.8),
+		margin: '36px auto 0',
+	},
+	avatarImage: {
+		width: '100%',
+		height: '100%',
+		borderRadius: 6,
+	},
+	closeImageIcon: {
+		position: 'absolute',
+		top: 0,
+		right: 0,
+		zIndex: 2,
+		color: '#ffffff',
 	},
 }))
 
@@ -73,6 +91,7 @@ const CUScheduleModal = ({
 	name,
 	sex,
 	age,
+	phoneNumber,
 	address,
 	doctor,
 	hour,
@@ -83,6 +102,16 @@ const CUScheduleModal = ({
 	visible,
 	actionType,
 }) => {
+	const [pName, setPName] = useState(name)
+	const [pSex, setPSex] = useState(sex)
+	const [pAge, setPAge] = useState(age)
+	const [pPhoneNumber, setPPhoneNumber] = useState(phoneNumber)
+	const [pAddress, setPAddress] = useState(address)
+	const [pDoctor, setPDoctor] = useState(doctor)
+	const [pTime, setPTime] = useState(hour)
+	const [pDate, setPDate] = useState(date)
+	const [pDesc, setPDesc] = useState(desc)
+	const [pImg, setPImg] = useState(img)
 	const classes = useStyles()
 	return (
 		<Dialog
@@ -96,9 +125,7 @@ const CUScheduleModal = ({
 				className={classes.modalTitle}
 				onClose={handleClose}
 			>
-				<Typography variant='h5'>
-					{actionType === 'create' ? 'Thêm lịch hẹn' : 'Cập nhật lịch hẹn'}
-				</Typography>
+				{actionType === 'create' ? 'Thêm lịch hẹn' : 'Cập nhật lịch hẹn'}
 				<IconButton className={classes.closeIcon} onClick={handleClose}>
 					<Close />
 				</IconButton>
@@ -108,122 +135,165 @@ const CUScheduleModal = ({
 					<Grid container spacing={3}>
 						<Grid item xs={6}>
 							<TextField
-								className={classes.textField}
 								required
 								label='Họ và tên'
-								defaultValue='Nguyễn Văn A'
+								value={pName}
+								className={classes.inputField}
+								onChange={e => setPName(e.target.value)}
 							/>
 							<TextField
-								className={classes.textField}
 								label='Số điện thoại'
 								type='number'
+								value={pPhoneNumber}
+								className={classes.inputField}
+								onChange={e => setPPhoneNumber(e.target.value)}
 							/>
 							<TextField
-								className={classes.textField}
 								label='Tuổi'
 								type='number'
+								value={pAge}
+								className={classes.inputField}
+								onChange={e => setPAge(e.target.value)}
 							/>
-							<TextField className={classes.textField} label='Địa chỉ' />
-							<FormControl component='fieldset' className={classes.formControl}>
+							<TextField
+								label='Địa chỉ'
+								value={pAddress}
+								className={classes.inputField}
+								onChange={e => setPAddress(e.target.value)}
+							/>
+							<Autocomplete
+								options={doctorList}
+								getOptionLabel={option => option.title}
+								className={classes.inputField}
+								renderInput={params => (
+									<TextField
+										{...params}
+										value={pDoctor}
+										label='Bác sĩ'
+										required
+										fullWidth
+										onChange={e => setPDoctor(e.target.value)}
+									/>
+								)}
+							/>
+							<FormControl
+								required
+								component='fieldset'
+								className={classes.formControl}
+							>
 								<FormLabel component='legend'>Giới tính</FormLabel>
 								<RadioGroup
 									aria-label='gender'
 									name='gender'
+									value={pSex}
 									className={classes.radioGroup}
+									onChange={e => setPSex(e.target.value)}
 								>
 									<FormControlLabel
 										value='female'
-										control={<Radio />}
+										control={<Radio color='primary' />}
 										label='Nữ'
 									/>
 									<FormControlLabel
 										value='male'
-										control={<Radio />}
+										control={<Radio color='primary' />}
 										label='Nam'
 									/>
 								</RadioGroup>
 							</FormControl>
 						</Grid>
 						<Grid item xs={6}>
-							{img ? (
-								<React.Fragment>
-									<Avatar alt='Avatar' src={img} variant='square' />
-									<IconButton
-										aria-label='upload picture'
-										component='span'
-										className={classes.closeImageIcon}
-										// onClick={() => setAvatar('')}
-									>
-										<Close />
-									</IconButton>
-								</React.Fragment>
-							) : (
-								<Button
-									variant='contained'
-									color='default'
-									component='label'
-									startIcon={<CloudUpload />}
-								>
-									Upload
-									<input
-										accept='image/*'
-										className={classes.uploadingInput}
-										id='uploading-input'
-										// onChange={onUpload}
-										type='file'
-									/>
-								</Button>
-							)}
-							<Autocomplete
-								id='combo-box-demo'
-								options={doctorList}
-								getOptionLabel={option => option.title}
-								fullwidth
-								renderInput={params => (
-									<TextField
-										{...params}
-										// value={selectedDoctor}
-										// onChange={e => setSelectedDoctor(e.target.value)}
-										label='Bác sĩ'
-										fullWidth
-									/>
-								)}
-							/>
 							<MuiPickersUtilsProvider
 								utils={DateFnsUtils}
 								className={classes.dateTimePicker}
 							>
 								<KeyboardDatePicker
 									disableToolbar
+									required
 									variant='inline'
 									format='dd/MM/yyyy'
-									id='date-picker-inline 1'
 									label='Ngày khám bệnh'
-									value={date}
-									// onChange={date => onDateChange({ startDate: date })}
+									value={pDate}
+									onChange={date => setPDate(date)}
 									KeyboardButtonProps={{
 										'aria-label': 'change date',
 									}}
+									className={classes.inputField}
 								/>
 								<KeyboardTimePicker
+									required
 									id='time-picker'
 									label='Giờ khám bệnh'
-									// value={selectedDate}
-									// onChange={handleDateChange}
+									value={pTime}
+									onChange={e => setPTime(e.target.value)}
 									KeyboardButtonProps={{
 										'aria-label': 'change time',
 									}}
+									className={classes.inputField}
 								/>
 							</MuiPickersUtilsProvider>
+							<div className={classes.imgUploader}>
+								{pImg ? (
+									<React.Fragment>
+										<Avatar
+											alt='Avatar'
+											src={pImg}
+											variant='square'
+											className={classes.avatarImage}
+										/>
+										<IconButton
+											aria-label='upload picture'
+											component='span'
+											className={classes.closeImageIcon}
+											onClick={() => setPImg('')}
+										>
+											<Close />
+										</IconButton>
+									</React.Fragment>
+								) : (
+									<Button
+										variant='contained'
+										color='default'
+										component='label'
+										startIcon={<CloudUpload />}
+									>
+										Upload
+										<input
+											accept='image/*'
+											id='uploading-input'
+											className={classes.uploadingInput}
+											onChange={e => {
+												const fileReader = new FileReader()
+												fileReader.readAsDataURL(e.target.files[0])
+												fileReader.onload = event => {
+													setPImg(event.target.result)
+												}
+											}}
+											type='file'
+										/>
+									</Button>
+								)}
+							</div>
 						</Grid>
+						<TextField
+							label='Nội dung khám'
+							required
+							variant='outlined'
+							multiline
+							rows='3'
+							rowsMax='15'
+							value={pDesc}
+							className={classes.inputField}
+							onChange={e => setPDesc(e.target.value)}
+						/>
 					</Grid>
 				</form>
 			</DialogContent>
-			<DialogActions>
-				<Button autoFocus onClick={handleClose} color='primary'>
+			<DialogActions classname={classes.actionBtnContainer}>
+				<Button variant='contained' color='secondary' onClick={handleClose}>
 					Hủy bỏ
 				</Button>
-				<Button onClick={handleClose} color='primary' autoFocus>
+				<Button variant='contained' color='primary' onClick={handleClose}>
 					Hoàn thành
 				</Button>
 			</DialogActions>
@@ -236,10 +306,11 @@ CUScheduleModal.propTypes = {
 	name: PropTypes.string,
 	sex: PropTypes.string,
 	age: PropTypes.number,
+	phoneNumber: PropTypes.string,
 	address: PropTypes.string,
 	doctor: PropTypes.string,
-	hour: PropTypes.string,
-	date: PropTypes.string,
+	hour: PropTypes.number,
+	date: PropTypes.object,
 	desc: PropTypes.string,
 	img: PropTypes.string,
 	handleClose: PropTypes.func,
@@ -251,11 +322,12 @@ CUScheduleModal.defaultProps = {
 	title: 'Thêm lịch hẹn',
 	name: '',
 	sex: '',
-	age: 18,
+	age: undefined,
+	phoneNumber: '',
 	address: '',
 	doctor: '',
-	hour: '',
-	date: '',
+	hour: new Date().getHours(),
+	date: new Date(),
 	desc: '',
 	img: '',
 	visible: false,
