@@ -1,7 +1,7 @@
 import 'date-fns'
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { makeStyles, withStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import {
 	Avatar,
 	Button,
@@ -10,7 +10,6 @@ import {
 	DialogContent,
 	RadioGroup,
 	DialogTitle,
-	Typography,
 	IconButton,
 	TextField,
 	Grid,
@@ -113,7 +112,7 @@ const CUScheduleModal = ({
 	const [pPhoneNumber, setPPhoneNumber] = useState(phone_number)
 	const [pAddress, setPAddress] = useState(address)
 	const [pDoctor, setPDoctor] = useState(doctor)
-	const [pTime, setPTime] = useState(hour)
+	const [pTime, setPTime] = useState(new Date('2014-08-18T21:11:54'))
 	const [pDate, setPDate] = useState(convertToSpaceStr(date))
 	const [pDesc, setPDesc] = useState(desc)
 	const [pImg, setPImg] = useState(img)
@@ -219,22 +218,22 @@ const CUScheduleModal = ({
 									format='dd/MM/yyyy'
 									label='Ngày khám bệnh'
 									value={pDate}
-									onChange={date => setPDate(date)}
 									KeyboardButtonProps={{
 										'aria-label': 'change date',
 									}}
 									className={classes.inputField}
+									onChange={date => setPDate(date)}
 								/>
 								<KeyboardTimePicker
 									required
 									id='time-picker'
 									label='Giờ khám bệnh'
 									value={pTime}
-									onChange={e => setPTime(e.target.value)}
 									KeyboardButtonProps={{
 										'aria-label': 'change time',
 									}}
 									className={classes.inputField}
+									onChange={time => setPTime(time)}
 								/>
 							</MuiPickersUtilsProvider>
 							<div className={classes.imgUploader}>
@@ -314,7 +313,7 @@ CUScheduleModal.propTypes = {
 	phone_number: PropTypes.string,
 	address: PropTypes.string,
 	doctor: PropTypes.string,
-	hour: PropTypes.number,
+	hour: PropTypes.string,
 	date: PropTypes.string,
 	desc: PropTypes.string,
 	img: PropTypes.string,
@@ -331,8 +330,8 @@ CUScheduleModal.defaultProps = {
 	phone_number: '',
 	address: '',
 	doctor: '',
-	hour: new Date().getHours(),
-	date: new Date(),
+	hour: new Date().toString(),
+	date: new Date().toString(),
 	desc: '',
 	img: '',
 	visible: false,

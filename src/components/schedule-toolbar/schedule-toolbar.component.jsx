@@ -40,14 +40,24 @@ const useStyles = makeStyles(theme => {
 		datePicker: {
 			margin: 0,
 			width: '45%',
+			'& input': {
+				fontSize: '0.875rem',
+			},
 		},
 		doctorPicker: {
 			display: 'flex',
 			justifyContent: 'space-around',
+			'& input': {
+				fontSize: '0.875rem',
+			},
+		},
+		autoCompletePicker: {
+			minWidth: '50%',
 		},
 		schStatusContainer: {
-			justifyContent: 'space-between',
+			justifyContent: 'flex-start',
 			'& > div': {
+				marginRight: 12,
 				'&:nth-child(1)': {
 					backgroundColor: theme.palette.success.main,
 				},
@@ -98,7 +108,7 @@ const ScheduleToolbar = ({
 	return (
 		<Container maxWidth='xl' className={classes.root}>
 			<Grid container spacing={3}>
-				<Grid item xs={3}>
+				<Grid item xs={2}>
 					<MuiPickersUtilsProvider utils={DateFnsUtils}>
 						<Grid container justify='space-between'>
 							<KeyboardDatePicker
@@ -137,7 +147,7 @@ const ScheduleToolbar = ({
 						id='combo-box-demo'
 						options={doctor}
 						getOptionLabel={option => option.title}
-						style={{ width: 300 }}
+						className={classes.autoCompletePicker}
 						renderInput={params => (
 							<TextField
 								{...params}
@@ -160,7 +170,7 @@ const ScheduleToolbar = ({
 				</Grid>
 				<Grid
 					item
-					xs={4}
+					xs={5}
 					className={`${classes.schStatusContainer} ${classes.alignCenter}`}
 				>
 					<Chip label='Đang chờ tái khám' color='secondary' />
