@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core/styles'
-import { AppBar, Tab, Tabs } from '@material-ui/core'
+import { Avatar, AppBar, Tab, Tabs } from '@material-ui/core'
 import {
 	Apps,
 	Backup,
@@ -15,6 +15,8 @@ import {
 	Settings,
 	ShoppingBasket,
 } from '@material-ui/icons'
+
+import avatar from '@src/assets/images/avatar.jpg'
 
 function a11yProps(index) {
 	return {

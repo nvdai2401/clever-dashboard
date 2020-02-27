@@ -6,6 +6,8 @@ import CUScheduleModal from '@components/cu-schedule-modal/cu-schedule-modal.com
 
 import ScheduleTableData from '@src/data/schedule'
 
+import './schedule-page.styles.scss'
+
 class SchedulePage extends React.Component {
 	constructor(props) {
 		super(props)

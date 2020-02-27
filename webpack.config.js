@@ -1,15 +1,16 @@
-const webpack = require('webpack')
+/**
+ * TODO:
+ *	- Optimize, minify css, js
+		- Split js
+		- Optimize import Material UI
+		- Add css to head, add unnecessary to the end of body
+		- Cache everything
+ */
+
 const { resolve } = require('path')
 const webpackMerge = require('webpack-merge')
-const modeConfig = env => require(`./configs/webpack.${env}.js`)(env)
-const commonConfig = require('./configs/webpack.common.js')
-
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
-const { CleanWebpackPlugin } = require('clean-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const modeConfig = env => require(`./configs/webpack.${env}.config.js`)(env)
+const commonConfig = require('./configs/webpack.common.config.js')
 
 const settings = ({ mode }) => {
 	console.log(mode)
@@ -19,7 +20,7 @@ const settings = ({ mode }) => {
 			entry: resolve(__dirname, 'src/index'),
 			output: {
 				path: resolve(__dirname, 'dist'),
-				filename: '[name].bundle.js',
+				filename: '[name].[chunkhash].js',
 				publicPath: '/',
 			},
 			resolve: {
