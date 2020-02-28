@@ -1,12 +1,18 @@
-import React from 'react'
-
-import ScheduleToolbar from '@components/schedule-toolbar/schedule-toolbar.component'
-import ScheduleTable from '@components/schedule-table/schedule-table.component'
-import CUScheduleModal from '@components/cu-schedule-modal/cu-schedule-modal.component'
+import React, { lazy } from 'react'
 
 import ScheduleTableData from '@src/data/schedule'
 
 import './schedule-page.styles.scss'
+
+const ScheduleToolbar = lazy(() =>
+	import('@components/schedule-toolbar/schedule-toolbar.component')
+)
+const ScheduleTable = lazy(() =>
+	import('@components/schedule-table/schedule-table.component')
+)
+const CUScheduleModal = lazy(() =>
+	import('@components/cu-schedule-modal/cu-schedule-modal.component')
+)
 
 class SchedulePage extends React.Component {
 	constructor(props) {

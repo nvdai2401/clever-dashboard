@@ -13,11 +13,13 @@ const modeConfig = env => require(`./configs/webpack.${env}.config.js`)(env)
 const commonConfig = require('./configs/webpack.common.config.js')
 
 const settings = ({ mode }) => {
-	console.log(mode)
 	return webpackMerge(
 		{
 			mode,
-			entry: resolve(__dirname, 'src/index'),
+			context: resolve(__dirname, 'src'),
+			entry: {
+				app: './index.js',
+			},
 			output: {
 				path: resolve(__dirname, 'dist'),
 				filename: '[name].[chunkhash].js',

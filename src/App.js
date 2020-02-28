@@ -1,16 +1,18 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, Suspense, lazy } from 'react'
 import { Route, Switch } from 'react-router-dom'
 
-import HomePage from '@pages/home-page/home-page.component'
-import SchedulePage from '@pages/schedule-page/schedule-page.component'
-import NavBar from '@components/navbar/navbar.component'
-
 import './App.scss'
+
+const HomePage = lazy(() => import('@pages/home-page/home-page.component'))
+const SchedulePage = lazy(() =>
+	import('@pages/schedule-page/schedule-page.component')
+)
+const NavBar = lazy(() => import('@components/navbar/navbar.component'))
 
 class App extends React.Component {
 	render() {
 		return (
-			<Fragment>
+			<Suspense fallback={<div>Loading...</div>}>
 				<NavBar />
 				<Switch>
 					<Route exact path='/' component={HomePage} />
@@ -30,7 +32,7 @@ class App extends React.Component {
 					<Route path='/contact' component={() => <div>contact</div>} />
 					<Route path='/password' component={() => <div>password</div>} />
 				</Switch>
-			</Fragment>
+			</Suspense>
 		)
 	}
 }

@@ -4,11 +4,10 @@ const webpackMerge = require('webpack-merge')
 
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 
 const settings = {
 	module: {
@@ -24,7 +23,7 @@ const settings = {
 					{
 						loader: MiniCssExtractPlugin.loader,
 						options: {
-							publicPath: './dist/styles/',
+							publicPath: '/dist/path/to/',
 						},
 					},
 					'css-loader',
@@ -34,6 +33,10 @@ const settings = {
 			{
 				test: /\.(png|jpe?g|gif|svg)$/i,
 				loader: 'file-loader',
+				options: {
+					name: '[name].[ext]',
+					outputPath: 'assets/images/',
+				},
 			},
 			// {
 			// 	test: /\.(png|jpe?g|gif)$/i,
@@ -60,6 +63,8 @@ const settings = {
 		contentBase: resolve(__dirname, 'dist'),
 		port: 3000,
 		historyApiFallback: true,
+		hot: true,
+		inline: true,
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
@@ -77,16 +82,25 @@ const settings = {
 		new MiniCssExtractPlugin({
 			filename: 'style.[chunkhash].css',
 		}),
-		new CopyWebpackPlugin([
-			{
-				from: 'src/assets/images',
-				to: 'assets/images',
-			},
-		]),
+		// new CopyWebpackPlugin([
+		// 	{
+		// 		from: 'src/assets/images',
+		// 		to: 'assets/images',
+		// 	},
+		// ]),
+		new BundleAnalyzerPlugin(),
 		new CleanWebpackPlugin(),
 	],
 	optimization: {
-		splitChunks: {},
+		splitChunks: {
+			cacheGroups: {
+				commons: {
+					test: /[\\/]node_modules[\\/]/,
+					name: false,
+					chunks: 'all',
+				},
+			},
+		},
 	},
 	// externals: {
 	// 	lodash: {
